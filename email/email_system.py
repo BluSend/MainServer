@@ -10,9 +10,9 @@ resend.api_key = os.environ["RESEND_API_KEY"]
 
 def send_email(to_address, otp):
     standard_params: resend.Emails.SendParams = {
-        "from": "BluSend <email@mail.blusend.tech>",
+        "from": "BluSend Mail Service <services@mail.blusend.tech>",
         "to": [to_address],
-        "subject": "hello world",
+        "subject": "Fill in!",
         "html": f'''
             <strong>Mail coming!</strong>
             <p>Please use the following one-time password to authentication on the BluSend robot:</p>
@@ -21,9 +21,9 @@ def send_email(to_address, otp):
     }
     try:
         email = resend.Emails.send(standard_params)
-        print(email)
+        print(f'Email Sent: {email}')
     except ResendError as error:
-        print(error)
-
-
-send_email("pstaggar@outlook.com", "766768787887")
+        raise Exception(f'''
+            Failed to send email to address {to_address}
+            Error Details: {error}
+            ''')
