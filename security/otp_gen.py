@@ -6,3 +6,5 @@ def generate_otp(digits):
     for i in range(digits):
         otp_generated += str(s.randbelow(9))
     return str(otp_generated)
+
+print(generate_otp(6))
