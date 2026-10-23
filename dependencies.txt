@@ -1,2 +1,3 @@
 resend
 python-dot-env
+sqlite3 (brew)
