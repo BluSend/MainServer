@@ -1,3 +1,7 @@
+# BluSend
+#
+# Basic functionality tests passed
+
 import secrets as s
 
 
