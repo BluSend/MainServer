@@ -1,13 +1,14 @@
 # BluSend
 #
 #
-# All requirements met
+# Fully compliant with component specific requirements
 # Basic functionality tests passed
 
 import sqlite3 as sq3
 import random as r
 
-db = sq3.connect("../database.db")
+db = sq3.connect("database.db")
+db.execute("PRAGMA foreign_keys = ON")
 cur = db.cursor()
 cur.execute('''CREATE TABLE IF NOT EXISTS
     User(name TEXT,
