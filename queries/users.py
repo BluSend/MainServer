@@ -30,12 +30,7 @@ def change_user(user_id, name, roomNumber, email):
         WHERE user_id = ?
         ''', (name, roomNumber, email, user_id))
     db.commit()
-    return {
-        "user_id": user_id,
-        "name": name,
-        "roomNumber": roomNumber,
-        "email": email
-    }
+    return f'User {name} changed'
 
 def all_users():
     all_cur = db.cursor()
