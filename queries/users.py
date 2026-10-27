@@ -5,7 +5,6 @@
 # Basic functionality tests passed
 
 import sqlite3 as sq3
-import random as r
 
 db = sq3.connect("database.db")
 db.execute("PRAGMA foreign_keys = ON")
@@ -22,6 +21,21 @@ def check_user(email):
     check_cur.execute("SELECT 1 FROM User WHERE email = ? LIMIT 1", (email,))
     return check_cur.fetchone() != None
 
+
+def change_user(user_id, name, roomNumber, email):
+    chg_cur = db.cursor()
+    chg_cur.execute('''
+        UPDATE User
+        SET name = ?, roomNumber = ?, email = ?
+        WHERE user_id = ?
+        ''', (name, roomNumber, email, user_id))
+    db.commit()
+    return {
+        "user_id": user_id,
+        "name": name,
+        "roomNumber": roomNumber,
+        "email": email
+    }
 
 def all_users():
     all_cur = db.cursor()
