@@ -30,7 +30,6 @@ def add_parcel(user_id):
     return "Parcel Added"
 
 def set_otp(tracking_id, hashed_otp):
-    # Overwrites any previous hash, so a new request invalidates the old PIN
     otp_cur = db.cursor()
     otp_cur.execute("UPDATE Parcel SET otp = ? WHERE tracking_id = ?", (hashed_otp, tracking_id))
     db.commit()
@@ -97,9 +96,14 @@ def decrement_delivery(tracking_id):
 
 def all_parcels(user_id = None):
     all_cur = db.cursor()
-    all_cur.execute(f'SELECT user_id, status, tracking_id, nDelivery FROM Parcel {"WHERE user_id = ?" if user_id  else " "}', (user_id,) if user_id else ())
+    all_cur.execute(f'SELECT user_id, status, tracking_id, nDelivery FROM Parcel {"WHERE user_id = ?" if user_id  else " "} ', (user_id,) if user_id else ())
     result = all_cur.fetchall()
     return result
+
+def parcels_by_status(status):
+    pbs_cur = db.cursor()
+    pbs_cur.execute('SELECT user_id, status, tracking_id, nDelivery, otp, compartment_number FROM Parcel WHERE status = ?', (status,))
+    return pbs_cur.fetchall()
 
 def assign_compartment(tracking_id, compartment_number):
     ac_cur = db.cursor()
@@ -110,3 +114,8 @@ def assign_compartment(tracking_id, compartment_number):
         ''', (compartment_number, tracking_id))
     db.commit()
     return f'Compartment number updated to {compartment_number}'
+
+def parcel_by_compartment(compartment_number):
+    pbc_cur = db.cursor()
+    pbc_cur.execute(' SELECT user_id, status, tracking_id, nDelivery, otp, compartment_number FROM Parcel WHERE compartment_number ?', (compartment_number,))
+    return pbc_cur.fetchall()

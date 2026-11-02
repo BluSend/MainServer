@@ -21,7 +21,6 @@ def check_user(email):
     check_cur.execute("SELECT 1 FROM User WHERE email = ? LIMIT 1", (email,))
     return check_cur.fetchone() != None
 
-
 def change_user(user_id, name, roomNumber, email):
     chg_cur = db.cursor()
     chg_cur.execute('''
