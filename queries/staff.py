@@ -5,6 +5,7 @@
 
 
 import sqlite3 as sq3
+import bcrypt
 
 
 db = sq3.connect("database.db")
@@ -14,6 +15,7 @@ main_cur.execute('''CREATE TABLE IF NOT EXISTS Staff (
     username TEXT NOT NULL UNIQUE,
     email TEXT NOT NULL,
     role TEXT NOT NULL CHECK (role IN ('admin', 'member')),
+    otp TEXT,
     staff_id INTEGER PRIMARY KEY AUTOINCREMENT
     )''')
 
@@ -53,3 +55,18 @@ def remove_staff(id):
     del_cur.execute('DELETE FROM Staff WHERE staff_id = ?', (id,))
     db.commit()
     return f'Staff Member Removed'
+
+def set_otp(staff_id, hashed_otp):
+    # Overwrites any previous hash, so a new request invalidates the old PIN
+    otp_cur = db.cursor()
+    otp_cur.execute("UPDATE Staff SET otp = ? WHERE staff_id = ?", (hashed_otp, staff_id))
+    db.commit()
+    return "OTP Set"
+
+def verify_otp(staff_id, entered_otp):
+    ver_cur = db.cursor()
+    ver_cur.execute("SELECT otp FROM Staff WHERE staff_id = ?", (staff_id,))
+    row = ver_cur.fetchone()
+    if row is None or row[0] is None:
+        return False
+    return bcrypt.checkpw(entered_otp.encode('utf-8'), row[0].encode('utf-8'))

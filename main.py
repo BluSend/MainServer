@@ -1,7 +1,7 @@
 from fastapi import FastAPI
-from routers import staff
+from routers import admin
 
 
 app = FastAPI()
 
-app.include_router(staff.staffFERouter, prefix="/staffFE")
+app.include_router(admin.adminRouter, prefix="/admin")

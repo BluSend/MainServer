@@ -2,3 +2,5 @@ resend
 python-dot-env
 sqlite3 (brew)
 fastapi
+pydantic
+bcrypt
