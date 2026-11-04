@@ -41,7 +41,7 @@ def verify_otp(tracking_id, entered_otp):
     row = ver_cur.fetchone()
     if row is None or row[0] is None:
         return False
-    return bcrypt.checkpw(entered_otp.encode('utf-8'), row[0].encode('utf-8'))
+    return bcrypt.checkpw(bytes(entered_otp.encode('utf-8')), row[0].encode('utf-8'))
 
 def change_owner(tracking_id, new_user_id):
     chg_usr_cur = db.cursor()
@@ -104,6 +104,11 @@ def parcels_by_status(status):
     pbs_cur = db.cursor()
     pbs_cur.execute('SELECT user_id, status, tracking_id, nDelivery, otp, compartment_number FROM Parcel WHERE status = ?', (status,))
     return pbs_cur.fetchall()
+
+def parcels_by_id(id):
+    pbi_cur = db.cursor()
+    pbi_cur.execute('SELECT user_id, status, tracking_id, nDelivery, otp, compartment_number FROM Parcel WHERE tracking_id = ?', (id,))
+    return pbi_cur.fetchall()
 
 def assign_compartment(tracking_id, compartment_number):
     ac_cur = db.cursor()

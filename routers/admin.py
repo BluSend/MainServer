@@ -76,7 +76,6 @@ async def add_parcel(input: database.IDOnly):
         data
     }
 
-
 @adminRouter.delete("/parcels/remove")
 async def remove_parcel(input: database.IDOnly):
     data = parcels.remove_parcel(input.id)

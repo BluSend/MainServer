@@ -8,11 +8,11 @@ resend.api_key = os.environ["RESEND_API_KEY"]
 
 
 
-def send_email(to_address, otp):
+def delivery_email(name, to_address, otp):
     standard_params: resend.Emails.SendParams = {
         "from": "BluSend Mail Service <services@mail.blusend.tech>",
         "to": [to_address],
-        "subject": "Fill in!",
+        "subject": f"Mail Coming! {name}",
         "html": f'''
             <strong>Mail coming!</strong>
             <p>Please use the following one-time password to authentication on the BluSend robot:</p>
